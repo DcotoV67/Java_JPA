@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Scanner;
 
 
-// http://chuwiki.chuidiang.org/index.php?title=Ejemplo_sencillo_de_JPA_con_Java_SEl
-
 public class App {
     public static void main(String[] args) {
 
@@ -33,12 +31,11 @@ public class App {
 
             switch (opcion) {
                 case 1:
-//                    Boolean siguiente = true;
+                     try {
                     String nombre;
                     int dni, claseid;
 
-//                    while (siguiente){
-//                        try{
+
 
                             TypedQuery<Alumno> query1 = em.createQuery("SELECT i FROM Alumno i", Alumno.class);
                             List<Alumno> results1 = query1.getResultList();
@@ -55,10 +52,7 @@ public class App {
                             results1.forEach(System.out::println);
 
 
-//                        }catch (NullPointerException e){
-//                            siguiente = false;
-//                        }
-//                    }
+
 
                     System.out.println("\nIntroduce el NOMBRE del alumno:");
                     nombre = scanner.nextLine();
@@ -80,9 +74,14 @@ public class App {
                     em.getTransaction().commit();
 
                     break;
+                     }catch (Exception e){
+                         System.out.println(e);
+                         break;
+                     }
 
                 case 2:
 
+                    try{
                     TypedQuery<Clase> query3 = em.createQuery("SELECT i FROM Clase i", Clase.class);
                     List<Clase> results3 = query3.getResultList();
 
@@ -131,21 +130,53 @@ public class App {
 
                     break;
 
+                    }catch (Exception e){
+                        System.out.println(e);
+                        break;
+                    }
+
                 case 3:
 
-                    //Crear Instituto
-                    Instituto instituto = new Instituto();
-                    instituto.setId(2);
-                    instituto.setNAlumnos(3);
-                    instituto.setNombre("Instituto Número Dos");
+                    try {
+                        //Crear Instituto
+                        String nombreI;
+                        int idI, nalumnosI;
 
-                    em.persist(instituto);
-                    em.getTransaction().begin();
-                    em.getTransaction().commit();
 
-                    break;
+                        System.out.println("Institutos: \n");
+                        TypedQuery<Alumno> totalAlumnos = em.createQuery("SELECT i FROM Alumno i", Alumno.class);
+                        List<Alumno> alumnosTotalList = totalAlumnos.getResultList();
 
-                case 4:
+
+                        Instituto instituto = new Instituto();
+                        System.out.println("\n Introduce el ID del instituto: ");
+                        idI = scanner.nextInt();
+                        instituto.setId(idI);
+
+                        System.out.println("\n Introduce el numero de alumnos del instituto: ");
+                        nalumnosI = scanner.nextInt();
+                        instituto.setNAlumnos(nalumnosI);
+
+                        scanner.nextLine();
+                        System.out.println("\n Introduce el ID del instituto: ");
+                        nombreI = scanner.nextLine();
+                        instituto.setNombre(nombreI);
+
+                        em.persist(instituto);
+                        em.getTransaction().begin();
+                        em.getTransaction().commit();
+
+                        break;
+
+                    }catch (Exception e){
+                            System.out.println(e);
+                            break;
+                        }
+
+
+                        case 4:
+
+                            try{
 
                     TypedQuery<Alumno> totalAlumnos = em.createQuery("SELECT i FROM Alumno i", Alumno.class);
                     List<Alumno> alumnosTotalList = totalAlumnos.getResultList();
@@ -184,7 +215,10 @@ public class App {
                     System.out.println("Número de alumnos: " + alumnosTotalList.size() + "\n");
 
                     break;
-
+                            }catch (Exception e){
+                                System.out.println(e);
+                                break;
+                            }
                 case 5:
                     System.out.println("Finalizando el programa...");
                     salir = true;
